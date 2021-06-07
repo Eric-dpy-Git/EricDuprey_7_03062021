@@ -3,22 +3,37 @@
 //import Mysql
 const mysql = require("mysql");
 
+//import express with command require, express need to be install before
+const express = require("express");
+
+//const app wich call express --> create express application
+const app = express();
+
 //create process.env to secure DB access
 //https://www.coderrocketfuel.com/article/store-mongodb-credentials-as-environment-variables-in-nodejs
 const dotenv = require("dotenv");
 dotenv.config();
 
-const db = mysql.createConnection({
+const connection = mysql.createConnection({
   host: process.env.MYSQL_URL,
   user: process.env.MYSQL_USERNAME,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
 });
-db.connect(function (err) {
+
+connection.connect(function (err) {
   if (err) throw err;
-  console.log("Connecté à la base de données MySQL!");
-  /* db.query("CREATE TABLE TableTest (id INT)", function (err, result) {
+  console.log("Database Connected!");
+});
+
+app.get("/api", (req, res) => {
+  connection.query("SELECT * FROM Animal", (err, rows) => {
     if (err) throw err;
-    console.log("Table créée !");
-  }); */
+    res.send(rows);
+    connection.end();
+  });
+});
+
+app.listen(3000, () => {
+  console.log("Server is running at port 3000");
 });
