@@ -27,11 +27,22 @@ connection.connect(function (err) {
 });
 
 app.get("/api", (req, res) => {
-  connection.query("SELECT * FROM Animal", (err, rows) => {
+  connection.query("SELECT * FROM members", (err, rows) => {
     if (err) throw err;
     res.send(rows);
     connection.end();
   });
+});
+
+app.post("/signup", (req, res) => {
+  connection.query(
+    "INSERT INTO members VALUES ('tetstLogin1', 'testMail1')",
+    (err, rows) => {
+      if (err) throw err;
+      res.send(rows);
+      connection.end();
+    }
+  );
 });
 
 app.listen(3000, () => {
