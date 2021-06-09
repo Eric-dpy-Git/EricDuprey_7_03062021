@@ -32,10 +32,9 @@ const connection = mysql.createConnection({
   console.log("Database Connected!");
 }); */
 
-connection.connect((err, connection) => {
+connection.connect((err) => {
   if (err) throw err;
-
-  console.log(`connected as id ${connection.threadId}`);
+  console.log("connected as id " + connection.threadId);
 });
 
 //create a member
@@ -107,13 +106,59 @@ app.delete("/deletteAllmembers", (req, res) => {
 //update a member
 app.put("/modifiMember", (req, res) => {
   const { id, lastname, firstname, email } = req.body[0];
-
   connection.query(
     "UPDATE members SET lastname = ? WHERE id = ?",
     [lastname, id],
     (err, rows) => {
       if (err) throw err;
       res.send(`member ${lastname} modified`);
+    }
+  );
+});
+
+//________________________________________________________
+
+//create an article
+app.post("/publication", (req, res) => {
+  connection.query(
+    "INSERT INTO articles VALUES (NULL, 'My article', '111', 'Sed ut tum ad senem senex de senectute, sic hoc libro ad amicum amicissimus scripsi de amicitia. Tum est Cato locutus, quo erat nemo fere senior temporibus illis, nemo prudentior; nunc Laelius et sapiens')",
+    (err, rows) => {
+      if (err) throw err;
+      console.log(req.body);
+      res.send(rows);
+    }
+  );
+});
+
+//create publication from postman
+app.post("/publicationForm", (req, res) => {
+  const params = req.body;
+  connection.query("INSERT INTO articles SET ?", params, (err, rows) => {
+    if (err) throw err;
+    res.send(`member ${params[0].title} has been added.`);
+    console.log(params);
+    console.log(params[0].title);
+  });
+});
+
+//get all article
+app.get("/publication", (req, res) => {
+  connection.query("SELECT * FROM articles", (err, rows) => {
+    if (err) throw err;
+    res.send(rows);
+    /* connection.end(); */
+  });
+});
+
+//update a member
+app.put("/modifiArticle", (req, res) => {
+  const { id, title, id_member, texte } = req.body[0];
+  connection.query(
+    "UPDATE articles SET title = ?, texte = ? WHERE id = ?",
+    [title, texte, id],
+    (err, rows) => {
+      if (err) throw err;
+      res.send(`Article modified`);
     }
   );
 });
