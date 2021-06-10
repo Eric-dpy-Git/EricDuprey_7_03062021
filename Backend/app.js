@@ -26,11 +26,6 @@ const connection = mysql.createConnection({
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
 });
-//--------------- for Pierre --> what the difference ?
-/* connection.connect(function (err) {
-  if (err) throw err;
-  console.log("Database Connected!");
-}); */
 
 connection.connect((err) => {
   if (err) throw err;
@@ -43,7 +38,7 @@ app.post("/signup", (req, res) => {
     "INSERT INTO members VALUES (NULL, 'Again', 'firstnstylet', 'mail@teseeet.fr')",
     (err, rows) => {
       if (err) throw err;
-      console.log(req.body);
+      /* console.log(req.body); */
       res.send(rows);
     }
   );
@@ -53,7 +48,7 @@ app.post("/signup", (req, res) => {
 app.get("/members", (req, res) => {
   connection.query("SELECT * FROM members", (err, rows) => {
     if (err) throw err;
-    res.send(rows);
+    res.send(rows); //send number 200
     /* connection.end(); */
   });
 });
@@ -61,11 +56,11 @@ app.get("/members", (req, res) => {
 //create from postman
 app.post("/membersForm", (req, res) => {
   const params = req.body;
-  connection.query("INSERT INTO members SET ?", params, (err, rows) => {
+  connection.query("INSERT INTO members SET ?", params, (err) => {
     if (err) throw err;
-    res.send(`member ${params[0].lastname} has been added.`);
-    console.log(params);
-    console.log(params[0].lastname);
+    res.send(`member ${params.lastname} has been added.`);
+    /* console.log(params);
+    console.log(params.lastname); */
   });
 });
 
@@ -76,6 +71,7 @@ app.get("/members/:id", (req, res) => {
     [req.params.id],
     (err, rows) => {
       if (err) throw err;
+      /* res.send(`member ${req.params.id} has been choose.`); */
       res.send(rows);
     }
   );
@@ -83,13 +79,14 @@ app.get("/members/:id", (req, res) => {
 
 //delete one member
 app.delete("/members/:id", (req, res) => {
+  /* const test = req.body.lastname; */
   connection.query(
     "DELETE FROM members WHERE id = ?",
     [req.params.id],
-    (err, rows) => {
+    (err) => {
       if (err) throw err;
-      res.send(`member with id  has been removed`);
-      /* res.send(rows); */
+      /* console.log(test); */
+      res.send(`member ${req.params.id} has been removed`);
     }
   );
 });
@@ -98,20 +95,19 @@ app.delete("/members/:id", (req, res) => {
 app.delete("/deletteAllmembers", (req, res) => {
   connection.query("DELETE FROM members", [req.params.id], (err, rows) => {
     if (err) throw err;
-    /* res.send(`memberwith  ID : ${[req.params.id]} has been removed`); */
-    res.send(rows);
+    res.send(/* `member ${req.params.id} has been removed` */ rows);
   });
 });
 
 //update a member
 app.put("/modifiMember", (req, res) => {
-  const { id, lastname, firstname, email } = req.body[0];
+  const { id, lastname, firstname, email } = req.body;
   connection.query(
     "UPDATE members SET lastname = ? WHERE id = ?",
     [lastname, id],
     (err, rows) => {
       if (err) throw err;
-      res.send(`member ${lastname} modified`);
+      res.send(/* `member ${lastname} modified` */ rows);
     }
   );
 });
@@ -135,9 +131,9 @@ app.post("/publicationForm", (req, res) => {
   const params = req.body;
   connection.query("INSERT INTO articles SET ?", params, (err, rows) => {
     if (err) throw err;
-    res.send(`member ${params[0].title} has been added.`);
+    res.send(`member ${params.title} has been added.`);
     console.log(params);
-    console.log(params[0].title);
+    console.log(params.title);
   });
 });
 
@@ -152,7 +148,7 @@ app.get("/publication", (req, res) => {
 
 //update a member
 app.put("/modifiArticle", (req, res) => {
-  const { id, title, id_member, texte } = req.body[0];
+  const { id, title, id_member, texte } = req.body;
   connection.query(
     "UPDATE articles SET title = ?, texte = ? WHERE id = ?",
     [title, texte, id],
