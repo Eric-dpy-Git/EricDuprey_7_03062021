@@ -74,7 +74,7 @@ exports.uptadteMember = (req, res) => {
     [lastname, id],
     (err, rows) => {
       if (err) throw err;
-      res.send(/* `member ${lastname} modified` */ rows);
+      res.send(`member ${lastname} modified`);
     }
   );
 };
@@ -85,9 +85,7 @@ exports.cretaArticle = (req, res) => {
   const params = req.body;
   connection.query("INSERT INTO articles SET ?", params, (err, rows) => {
     if (err) throw err;
-    res.send(`member ${params.title} has been added.`);
-    console.log(params);
-    console.log(params.title);
+    res.send(`article ${params.title} has been added.`);
   });
 };
 
@@ -95,7 +93,6 @@ exports.getAllArticles = (req, res) => {
   connection.query("SELECT * FROM articles", (err, rows) => {
     if (err) throw err;
     res.send(rows);
-    /* connection.end(); */
   });
 };
 
