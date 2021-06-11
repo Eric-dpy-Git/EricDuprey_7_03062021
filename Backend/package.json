@@ -6,14 +6,25 @@
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "sequelize": "^6.6.2"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "eric duprey",
   "license": "ISC",
-  "description": ""
+  "description": "an api with node and mysql",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Eric-dpy-Git/EricDuprey_7_03062021/issues"
+  },
+  "keywords": [
+    "api",
+    "backend",
+    "node",
+    "mysql"
+  ]
 }
