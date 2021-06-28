@@ -67,7 +67,7 @@ module.exports = {
                     email: user.email,
                     userId: user.id,
                   },
-                  process.env.TKN || "groupomania",
+                  "RANDOM_TOKEN_SECRET",
                   function (err, token) {
                     res.status(200).json({
                       user: user.id,
@@ -131,27 +131,40 @@ module.exports = {
         });
       });
   },
+
   deleteAccount: async function (req, res) {
     try {
       const userId = req.body.userId;
       const idToDelete = req.params.id;
-      console.log(req.body.userId);
+
       if (!userId || !idToDelete) {
         res.status(401).json({ message: "You dont have right to delete" });
         return;
       }
-      let allowed = req.body.isAdmin;
+      /* let allowed = req.body.isAdmin;
       if (userId == idToDelete) allowed = true;
       if (!allowed) {
         res.status(401).json({ message: "You dont have right to delete" });
         return;
-      }
+      } */
 
       let user = await models.Users.findOne({ where: { id: idToDelete } });
       user.destroy();
       res.status(200).json({ message: "Deleted account", hooks: true });
     } catch (error) {
-      res.status(400).json({ error });
+      res.status(400).json({ message: "Catch error in async delete function" });
     }
   },
 };
+/* module.exports.deleteAccount = (req, res, next) => {
+  console.log(req.params.id);
+  console.log(models.Users);
+  models.Users.findOne({ id: req.params.id })
+    .then((User) => {
+      models.Users.destroy({ id: req.params.id })
+        .then(() => res.status(200).json({ message: "Objet supprimé !" }))
+        .catch((error) => res.status(400).json({ error }));
+    })
+
+    .catch((error) => res.status(500).json({ error }));
+}; */

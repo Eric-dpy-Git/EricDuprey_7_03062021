@@ -3,7 +3,8 @@ const models = require("../models");
 module.exports = {
   createMessage: function (req, res) {
     const message = {
-      userId: req.body.id,
+      userId: req.body.userId,
+      title: req.body.title,
       content: req.body.content,
       //need to add image
       likes: 0,
@@ -29,7 +30,7 @@ module.exports = {
       where: { id: id },
       include: {
         model: models.Users,
-        attributes: ["username"], //need to add attributes if we do not want to see all Users (password etc..)
+        attributes: ["username", "password"], //need to add attributes if we do not want to see all Users (password etc..)
       },
     })
       .then((result) => {
@@ -77,6 +78,28 @@ module.exports = {
         res.status(200).json({
           message: "Impossible to update message !",
           error: error,
+        });
+      });
+  },
+  deleteMessage: function (req, res) {
+    const messageId = req.params.id;
+    const userId = req.body.userId;
+    const userMessageId = req.body.UserId;
+
+    if (!userId || !userMessageId) {
+      res.status(401).json({ message: "request invalid" });
+      return;
+    }
+    models.Messages.destroy({ where: { id: messageId } })
+      .then((result) => {
+        res.status(200).json({
+          message: "publication deleted successfully",
+        });
+      })
+      .catch((error) => {
+        res.status(200).json({
+          message: "Somenthing went wrong",
+          error: erro,
         });
       });
   },

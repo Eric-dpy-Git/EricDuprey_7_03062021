@@ -7,6 +7,7 @@ const cors = require("cors");
 //routes
 const publicationsRoutes = require("./routes/messages");
 const usersRoutes = require("./routes/users");
+const likesRoutes = require("./routes/likes");
 /* const imagesRoutes = require ('./routes/images') */
 
 app.use(cors());
@@ -29,5 +30,6 @@ app.use(express.json());
 
 app.use("/api/messages", publicationsRoutes);
 app.use("/api/users", usersRoutes);
+app.use("/api/likes", likesRoutes);
 
 module.exports = app;
