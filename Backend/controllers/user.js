@@ -2,7 +2,7 @@ const models = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const EMAIL_REGEX =
+const REGEX_MAIL =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/;
 
@@ -13,12 +13,12 @@ module.exports = {
     let password = req.body.password;
 
     if (email == null || username == null || password == null) {
-      return res.status(400).json({ error: "missing parameters" });
+      return res.status(400).json({ error: "something is missing" });
     }
-    if (!EMAIL_REGEX.test(email)) {
-      return res.status(400).json({ error: "not a valid email" });
+    if (!REGEX_MAIL.test(email)) {
+      return res.status(400).json({ error: "invalid mail" });
     }
-    models.Users.findOne({ where: { email: req.body.email } })
+    models.User.findOne({ where: { email: req.body.email } })
       .then((result) => {
         if (result) {
           res.status(409).json({ message: "email already use" });
@@ -29,11 +29,11 @@ module.exports = {
                 email: req.body.email,
                 username: req.body.username,
                 bio: req.body.bio,
-                //add image
+                //add image soon
                 password: hash,
                 isAdmin: 0,
               };
-              models.Users.create(user)
+              models.User.create(user)
                 .then((result) => {
                   res.status(201).json({ message: "User created" });
                 })
@@ -52,7 +52,7 @@ module.exports = {
   },
   //---------------------------------------------------------------------login
   login: function login(req, res) {
-    models.Users.findOne({ where: { email: req.body.email } })
+    models.User.findOne({ where: { email: req.body.email } })
       .then((user) => {
         if (user === null) {
           res.status(401).json({ message: "User not find" });
@@ -88,9 +88,9 @@ module.exports = {
   },
   //------------------------------------------------------------------------get all users
   getAllUsers: function (req, res) {
-    models.Users.findAll()
-      .then((users) => {
-        res.status(200).json(users);
+    models.User.findAll()
+      .then((user) => {
+        res.status(200).json(user);
       })
       .catch((error) => {
         res.status(500).json({
@@ -100,7 +100,7 @@ module.exports = {
   },
   getUserProfile: function (req, res) {
     const userId = req.params.id;
-    models.Users.findOne({ where: { id: userId } })
+    models.User.findOne({ where: { id: userId } })
       .then(function (user) {
         if (user) {
           res.status(201).json(user);
@@ -118,7 +118,7 @@ module.exports = {
       bio: req.body.bio,
     };
 
-    models.Users.update(updatedUser, { where: { id: userId } })
+    models.User.update(updatedUser, { where: { id: userId } })
       .then((result) => {
         res.status(200).json({
           message: "User updated",
@@ -127,7 +127,7 @@ module.exports = {
       })
       .catch((error) => {
         res.status(200).json({
-          message: "Somenthing went wrong",
+          message: "errer in user update",
         });
       });
   },
@@ -135,36 +135,18 @@ module.exports = {
   deleteAccount: async function (req, res) {
     try {
       const userId = req.body.userId;
-      const idToDelete = req.params.id;
+      const deletedId = req.params.id;
 
-      if (!userId || !idToDelete) {
-        res.status(401).json({ message: "You dont have right to delete" });
+      if (!userId || !deletedId) {
+        res.status(401).json({ message: "no permission for that !" });
         return;
       }
-      /* let allowed = req.body.isAdmin;
-      if (userId == idToDelete) allowed = true;
-      if (!allowed) {
-        res.status(401).json({ message: "You dont have right to delete" });
-        return;
-      } */
 
-      let user = await models.Users.findOne({ where: { id: idToDelete } });
+      let user = await models.User.findOne({ where: { id: deletedId } });
       user.destroy();
-      res.status(200).json({ message: "Deleted account", hooks: true });
+      res.status(200).json({ message: "account deleted", hooks: true });
     } catch (error) {
-      res.status(400).json({ message: "Catch error in async delete function" });
+      res.status(400).json({ message: "error in delete account" });
     }
   },
 };
-/* module.exports.deleteAccount = (req, res, next) => {
-  console.log(req.params.id);
-  console.log(models.Users);
-  models.Users.findOne({ id: req.params.id })
-    .then((User) => {
-      models.Users.destroy({ id: req.params.id })
-        .then(() => res.status(200).json({ message: "Objet supprimé !" }))
-        .catch((error) => res.status(400).json({ error }));
-    })
-
-    .catch((error) => res.status(500).json({ error }));
-}; */

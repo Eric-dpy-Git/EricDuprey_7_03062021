@@ -8,23 +8,35 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      userId: {
+      UserId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: "Users",
           key: "id",
         },
+        onDelete: "cascade",
       },
-      content: {
+      title: {
         allowNull: false,
         type: Sequelize.STRING,
       },
       attachment: {
         allowNull: true,
         type: Sequelize.STRING,
+        validate: {
+          isUrl: true,
+        },
+      },
+      content: {
+        allowNull: true,
+        type: Sequelize.STRING,
       },
       likes: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      dislikes: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },

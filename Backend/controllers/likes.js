@@ -1,120 +1,162 @@
 // Imports
 let models = require("../models");
-let asyncLib = require("async");
 
-// Constants
+// Const
 const DISLIKED = 0;
 const LIKED = 1;
 
-// Routes
 module.exports = {
-  liking: function (req, res) {
-    let messageId = /* parseInt( */ req.params.id; /* ) */
-    let UserId = /* parseInt( */ req.body.userId; /* ) */
-    console.log(messageId);
-    console.log(UserId);
-
-    asyncLib.waterfall(
-      [
-        function (done) {
-          models.Messages.findOne({
-            where: { id: messageId },
-          })
-            .then(function (messageFound) {
-              done(null, messageFound);
-            })
-            .catch(function (err) {
-              return res.status(500).json({ error: "No message !" });
-            });
-        },
-        function (messageFound, done) {
-          if (messageFound) {
-            models.Messages.findOne({
-              where: { id: UserId },
-            })
-              .then(function (userFound) {
-                done(null, messageFound, userFound);
+  //---------------------------------------------liking
+  liking: (req, res, next) => {
+    const userId = req.body.userId;
+    const messageId = req.params.id;
+    //Compare message with id
+    models.Message.findOne({ where: { id: messageId } }).then((message) => {
+      if (message) {
+        //Compare user with id
+        models.User.findOne({ where: { id: userId } }).then((user) => {
+          if (user) {
+            // if message & user found
+            models.Like.findOne({
+              where: { userId: userId, messageId: messageId },
+            }) // find if allready like
+              .then((like) => {
+                if (!like) {
+                  //create if not
+                  models.Like.create({
+                    messageId: message.id,
+                    userId: user.id,
+                    allreadyLike: 1,
+                  })
+                    .then(() => {
+                      message
+                        .update({
+                          // add 1 to likes row
+                          likes: message.likes + 1,
+                        })
+                        .then(() => res.status(201).json(message));
+                    })
+                    .catch((error) => res.status(500).json({ error }));
+                  //if allready like and like on
+                } else if (like && like.allreadyLike == 1) {
+                  like
+                    //in Likes db turn alreadyLike to 0
+                    .update(
+                      { allreadyLike: 0 },
+                      { where: { messageId: message.id, userId: user.id } }
+                    )
+                    //then -1 in Messages db at row likes
+                    .then(() => {
+                      message
+                        .update({
+                          likes: message.likes - 1,
+                        })
+                        .then(() => {
+                          models.Like.destroy({
+                            where: { id: like.id },
+                          }).then(() => res.status(200).json("like deleted"));
+                        });
+                    })
+                    .catch((error) => {
+                      return res.status(500).json({ error });
+                    });
+                } else if (like && like.allreadyLike === -1) {
+                  // if is like allready disliked
+                  return res.status(409).json({ message: "disliked message" });
+                }
               })
-              .catch(function (err) {
-                return res.status(500).json({ error: "No user" });
+              .catch((error) => {
+                return res.status(500).json({ error });
               });
           } else {
-            res.status(404).json({ error: "Already liked" });
+            return res.status(401).json({ message: "unknow user" });
           }
-        },
-        function (messageFound, userFound, done) {
-          if (userFound) {
-            models.Likes.findOne({
-              where: {
-                userId: userId,
-                messageId: messageId,
-              },
-            })
-              .then(function (userAlreadyLikedFound) {
-                done(null, messageFound, userFound, userAlreadyLikedFound);
-              })
-              .catch(function (err) {
-                return res
-                  .status(500)
-                  .json({ error: "Already used verification off" });
-              });
-          } else {
-            res.status(404).json({ error: "No user !" });
-          }
-        },
-        function (messageFound, userFound, userAlreadyLikedFound, done) {
-          if (!userAlreadyLikedFound) {
-            messageFound
-              .addUser(userFound, { isLike: LIKED })
-              .then(function (alreadyLikeFound) {
-                done(null, messageFound, userFound);
-              })
-              .catch(function (err) {
-                return res
-                  .status(500)
-                  .json({ error: "Not working in already use 1" });
-              });
-          } else {
-            if (userAlreadyLikedFound.isLike === DISLIKED) {
-              userAlreadyLikedFound
-                .update({
-                  isLike: LIKED,
-                })
-                .then(function () {
-                  done(null, messageFound, userFound);
-                })
-                .catch(function (err) {
-                  res
-                    .status(500)
-                    .json({ error: "Not working in already use 2" });
-                });
-            } else {
-              res.status(409).json({ error: "Already liked" });
-            }
-          }
-        },
-        function (messageFound, userFound, done) {
-          messageFound
-            .update({
-              Likes: messageFound.likes + 1,
-            })
-            .then(function () {
-              done(messageFound);
-            })
-            .catch(function (err) {
-              res
-                .status(500)
-                .json({ error: "cannot update message like counter" });
-            });
-        },
-      ],
-      function (messageFound) {
-        if (messageFound) {
-          return res.status(201).json(messageFound);
-        } else {
-          return res.status(500).json({ error: "cannot update message" });
-        }
+        });
       }
-    );
+    });
+  },
+
+  // -----------------------------------------------------------disliking
+  disliking: (req, res, next) => {
+    const userId = req.body.userId;
+    const messageId = req.params.id;
+    models.Message.findOne({ where: { id: messageId } })
+      .then((message) => {
+        if (message) {
+          models.User.findOne({ where: { id: userId } })
+            .then((user) => {
+              if (user) {
+                models.Like.findOne({
+                  where: { userId: userId, messageId: messageId },
+                })
+                  .then((like) => {
+                    if (!like) {
+                      models.Like.create({
+                        messageId: message.id,
+                        userId: user.id,
+                        allreadyLike: -1,
+                      })
+                        .then(() => {
+                          message
+                            .update({
+                              dislikes: message.dislikes + 1,
+                            })
+                            .then(() => res.status(201).json(message));
+                        })
+                        .catch((error) => res.status(500).json({ error }));
+                    } else if (like && like.allreadyLike == -1) {
+                      like
+                        .update(
+                          { allreadyLike: 0 },
+                          { where: { messageId: message.id, userId: user.id } }
+                        )
+                        .then(() => {
+                          message
+                            .update({
+                              dislikes: message.dislikes - 1,
+                            })
+                            .then(() => {
+                              models.Like.destroy({
+                                where: {
+                                  messageId: message.id,
+                                  userId: user.id,
+                                },
+                              }).then(() =>
+                                res.status(200).json("dislike deleted")
+                              );
+                            });
+                        })
+                        .catch((error) => {
+                          return res.status(500).json({ error });
+                        });
+                    } else if (like && like.allreadyLike == 1) {
+                      return res
+                        .status(409)
+                        .json({ message: "disliked message" });
+                    }
+                  })
+                  .catch(() => {
+                    return res.status(500).json({
+                      error: "server error",
+                    });
+                  });
+              } else {
+                return res.status(401).json({ error: "unknow user" });
+              }
+            })
+            .catch(() =>
+              res.status(500).json({
+                error: "server error",
+              })
+            );
+        } else {
+          return res.status(400).json({ error: "unknow message" });
+        }
+      })
+      .catch(() =>
+        res.status(500).json({
+          error: "server error",
+        })
+      );
   },
 };

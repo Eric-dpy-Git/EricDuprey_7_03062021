@@ -5,10 +5,9 @@ const path = require("path");
 const cors = require("cors");
 
 //routes
-const publicationsRoutes = require("./routes/messages");
-const usersRoutes = require("./routes/users");
-const likesRoutes = require("./routes/likes");
-/* const imagesRoutes = require ('./routes/images') */
+const publicationsRoutes = require("./routes/message");
+const usersRoutes = require("./routes/user");
+const likesRoutes = require("./routes/like");
 
 app.use(cors());
 

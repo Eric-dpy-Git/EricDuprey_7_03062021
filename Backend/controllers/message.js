@@ -3,13 +3,14 @@ const models = require("../models");
 module.exports = {
   createMessage: function (req, res) {
     const message = {
-      userId: req.body.userId,
+      UserId: req.body.userId,
       title: req.body.title,
       content: req.body.content,
-      //need to add image
+      attachement: req.body.attachement,
       likes: 0,
+      dislikes: 0,
     };
-    models.Messages.create(message)
+    models.Message.create(message)
       .then((result) => {
         res.status(201).json({
           message: "Message created",
@@ -25,12 +26,13 @@ module.exports = {
       });
   },
   getOneMessage: function (req, res) {
-    const id = req.params.id;
-    models.Messages.findOne({
-      where: { id: id },
+    const messageId = req.params.id;
+    console.log(messageId);
+    models.Message.findOne({
+      where: { id: messageId },
       include: {
-        model: models.Users,
-        attributes: ["username", "password"], //need to add attributes if we do not want to see all Users (password etc..)
+        model: models.User,
+        attributes: ["username"], //attributes with username only (i don't want to see email, pasword, etc...)
       },
     })
       .then((result) => {
@@ -38,16 +40,16 @@ module.exports = {
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Impossible to get one message",
+          message: "cannot get one message",
         });
       });
   },
-  getAllMessages: function (req, res) {
-    models.Messages.findAll({
+  allMessages: function (req, res) {
+    models.Message.findAll({
       order: [["createdAt", "DESC"]],
       include: {
-        model: models.Users,
-        attributes: ["username"], //need to add attributes if we do not want to see all Users (password etc..)
+        model: models.User,
+        attributes: ["username"], //attributes with username only (i don't want to see email, pasword, etc...)
       },
     })
       .then((result) => {
@@ -55,7 +57,7 @@ module.exports = {
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Impossible to get all messages",
+          message: "cannot get all messages",
         });
       });
   },
@@ -65,7 +67,7 @@ module.exports = {
       content: req.body.content,
     };
     const userId = req.body.userId;
-    models.Messages.update(updatedMessage, {
+    models.Message.update(updatedMessage, {
       where: { id: id, userId: userId },
     })
       .then((result) => {
@@ -76,31 +78,27 @@ module.exports = {
       })
       .catch((error) => {
         res.status(200).json({
-          message: "Impossible to update message !",
+          message: "can't update message !",
           error: error,
         });
       });
   },
+
   deleteMessage: function (req, res) {
     const messageId = req.params.id;
     const userId = req.body.userId;
-    const userMessageId = req.body.UserId;
-
-    if (!userId || !userMessageId) {
-      res.status(401).json({ message: "request invalid" });
-      return;
-    }
-    models.Messages.destroy({ where: { id: messageId } })
-      .then((result) => {
-        res.status(200).json({
-          message: "publication deleted successfully",
+    models.Message.findOne({ where: { UserId: userId } }).then((message) => {
+      models.Message.destroy({ where: { id: messageId } })
+        .then((result) => {
+          res.status(200).json({
+            message: "message deleted",
+          });
+        })
+        .catch((error) => {
+          res.status(200).json({
+            message: "no working",
+          });
         });
-      })
-      .catch((error) => {
-        res.status(200).json({
-          message: "Somenthing went wrong",
-          error: erro,
-        });
-      });
+    });
   },
 };
