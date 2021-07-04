@@ -10,6 +10,7 @@ module.exports = {
       likes: 0,
       dislikes: 0,
     };
+    //her i can put data from front restriction
     models.Message.create(message)
       .then((result) => {
         res.status(201).json({

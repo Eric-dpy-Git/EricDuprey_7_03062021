@@ -18,6 +18,7 @@ module.exports = {
     if (!REGEX_MAIL.test(email)) {
       return res.status(400).json({ error: "invalid mail" });
     }
+    //possible to add here restriction for username & pasword
     models.User.findOne({ where: { email: req.body.email } })
       .then((result) => {
         if (result) {
