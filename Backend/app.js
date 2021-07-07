@@ -1,15 +1,15 @@
-//imports
 const express = require("express");
-const app = express();
+
+const helmet = require("helmet");
 const path = require("path");
-const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config();
 
-//routes
-const publicationsRoutes = require("./routes/message");
-const usersRoutes = require("./routes/user");
-const likesRoutes = require("./routes/like");
+const likeRoutes = require("./routes/like");
+const messageRoutes = require("./routes/message");
+const userRoutes = require("./routes/user");
 
-app.use(cors());
+const app = express();
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -27,8 +27,12 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/api/messages", publicationsRoutes);
-app.use("/api/users", usersRoutes);
-app.use("/api/likes", likesRoutes);
+app.use("/images", express.static(path.join(__dirname, "images")));
+
+app.use(helmet());
+
+app.use("/api/messages", likeRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/users", userRoutes);
 
 module.exports = app;

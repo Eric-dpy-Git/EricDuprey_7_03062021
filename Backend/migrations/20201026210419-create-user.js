@@ -10,23 +10,32 @@ module.exports = {
       },
       email: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true,
+        validate: {
+          isEmail: true
+        }
       },
       username: {
+        type: Sequelize.STRING,
         allowNull: false,
-        type: Sequelize.STRING
+        unique: true
+      },
+      firstname: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      lastname: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       password: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      bio: {
-        allowNull: true,
-        type: Sequelize.STRING
-      },
-      imageUrl: {
-        allowNull: true,
-        type: Sequelize.STRING
+      isAdmin: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

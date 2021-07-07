@@ -1,21 +1,12 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Likes", {
+    await queryInterface.createTable("Messages", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
-      },
-      messageId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Messages",
-          key: "id",
-        },
-        onDelete: "cascade",
       },
       userId: {
         allowNull: false,
@@ -26,7 +17,26 @@ module.exports = {
         },
         onDelete: "cascade",
       },
-      allreadyLike: {
+      title: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      attachment: {
+        allowNull: true,
+        type: Sequelize.STRING,
+        validate: {
+          isUrl: true,
+        },
+      },
+      content: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      likes: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      dislikes: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
@@ -41,6 +51,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Likes");
+    await queryInterface.dropTable("Messages");
   },
 };

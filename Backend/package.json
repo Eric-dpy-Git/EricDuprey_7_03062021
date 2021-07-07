@@ -1,23 +1,38 @@
 {
-  "name": "groupomania_backend",
-  "version": "1.0.3",
-  "description": "api for social netwoerk mvp",
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "My_API",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
-  "author": "eric_duprey",
+  "keywords": [
+    "api",
+    "dev",
+    "http"
+  ],
+  "author": "Eric_Duprey",
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.0",
-    "bcrypt": "^5.0.1",
-    "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "email-validator": "^2.0.4",
+    "eslint": "^7.12.1",
     "express": "^4.17.1",
+    "express-bouncer": "^0.2.0",
+    "helmet": "^4.1.1",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.2",
+    "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
-    "path": "^0.12.7",
-    "sequelize": "^6.6.2"
-  }
+    "nodemon": "^2.0.6",
+    "password-validator": "^5.1.0",
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0",
+    "sqlite3": "^5.0.0"
+  },
+  "devDependencies": {}
 }

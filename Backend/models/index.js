@@ -43,4 +43,17 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.User = require("../models/user")(sequelize, Sequelize);
+db.Message = require("../models/message")(sequelize, Sequelize);
+db.Like = require("../models/like")(sequelize, Sequelize);
+
+db.User.hasMany(db.Message);
+
+db.Message.belongsTo(db.User);
+
+db.User.hasMany(db.Like);
+db.Like.belongsTo(db.User);
+db.Message.hasMany(db.Like);
+db.Like.belongsTo(db.Message);
+
 module.exports = db;

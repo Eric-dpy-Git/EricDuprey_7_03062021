@@ -1,105 +1,191 @@
-const models = require("../models");
+const db = require("../models/index");
+const fs = require("fs");
+const jwt = require("jsonwebtoken");
 
-module.exports = {
-  createMessage: function (req, res) {
-    const message = {
-      UserId: req.body.userId,
-      title: req.body.title,
-      content: req.body.content,
-      attachement: req.body.attachement,
-      likes: 0,
-      dislikes: 0,
-    };
-    //her i can put data from front restriction
-    models.Message.create(message)
-      .then((result) => {
-        res.status(201).json({
-          message: "Message created",
-          post: result,
-        });
-      })
-      .catch((error) => {
-        console.log(res);
-        res.status(500).json({
-          message: "Error in message creation",
-          error: error,
-        });
-      });
-  },
-  getOneMessage: function (req, res) {
-    const messageId = req.params.id;
-    console.log(messageId);
-    models.Message.findOne({
-      where: { id: messageId },
-      include: {
-        model: models.User,
-        attributes: ["username"], //attributes with username only (i don't want to see email, pasword, etc...)
-      },
-    })
-      .then((result) => {
-        res.status(200).json(result);
-      })
-      .catch((error) => {
-        res.status(500).json({
-          message: "cannot get one message",
-        });
-      });
-  },
-  allMessages: function (req, res) {
-    models.Message.findAll({
-      order: [["createdAt", "DESC"]],
-      include: {
-        model: models.User,
-        attributes: ["username"], //attributes with username only (i don't want to see email, pasword, etc...)
-      },
-    })
-      .then((result) => {
-        res.status(200).json(result);
-      })
-      .catch((error) => {
-        res.status(500).json({
-          message: "cannot get all messages",
-        });
-      });
-  },
-  updateMessage: function (req, res) {
-    const id = req.params.id;
-    const updatedMessage = {
-      content: req.body.content,
-    };
-    const userId = req.body.userId;
-    models.Message.update(updatedMessage, {
-      where: { id: id, userId: userId },
-    })
-      .then((result) => {
-        res.status(200).json({
-          message: "Message updated !",
-          message: updatedMessage,
-        });
-      })
-      .catch((error) => {
-        res.status(200).json({
-          message: "can't update message !",
-          error: error,
-        });
-      });
-  },
-
-  deleteMessage: function (req, res) {
-    const messageId = req.params.id;
-    const userId = req.body.userId;
-    models.Message.findOne({ where: { UserId: userId } }).then((message) => {
-      models.Message.destroy({ where: { id: messageId } })
-        .then((result) => {
-          res.status(200).json({
-            message: "message deleted",
-          });
+exports.createMessage = (req, res, next) => {
+  db.User.findOne({
+    where: { id: req.body.userId },
+  })
+    .then((user) => {
+      if (req.body.image == "undefined") {
+        return db.Message.create({
+          UserId: user.id,
+          title: req.body.title,
+          attachment: null,
+          content: req.body.content,
+          likes: req.body.likes,
+          dislikes: req.body.dislikes,
         })
-        .catch((error) => {
-          res.status(200).json({
-            message: "no working",
-          });
-        });
+          .then((message) => res.status(201).json(message))
+          .catch(() => res.status(400).json({ error: "invalid" }));
+      } else {
+        return db.Message.create({
+          UserId: user.id,
+          title: req.body.title,
+          attachment: `${req.protocol}://${req.get("host")}/images/${
+            req.file.filename
+          }`,
+          content: req.body.content,
+          likes: req.body.likes,
+          dislikes: req.body.dislikes,
+        })
+          .then((message) => res.status(201).json(message))
+          .catch(() => res.status(400).json({ error: "invalid" }));
+      }
+    })
+    .catch(() => res.status(500).json({ error: "error server" }));
+};
+
+exports.getAllMessages = (req, res, next) => {
+  console.log(req.body);
+  let fields = req.query.fields;
+  let limit = parseInt(req.query.limit);
+  let offset = parseInt(req.query.offset);
+  let order = req.query.order;
+
+  db.Message.findAll({
+    order: [order != null ? order.split(":") : ["createdAt", "DESC"]],
+    attributes: fields !== "*" && fields != null ? fields.split(",") : null,
+    limit: !isNaN(limit) ? limit : null,
+    offset: !isNaN(offset) ? offset : null,
+    include: [
+      {
+        model: db.User,
+        attributes: ["username"],
+      },
+    ],
+  })
+    .then((message) => {
+      return res.status(200).json(message);
+    })
+    .catch(() => {
+      res.status(500).json({ error: "no message" });
     });
-  },
+};
+
+exports.getOneMessage = (req, res, next) => {
+  db.Message.findOne({
+    where: { id: req.params.messageId },
+    include: [
+      {
+        model: db.User,
+        attributes: ["id", "username"],
+        include: [
+          {
+            model: db.Like,
+            attributes: ["id", "userId"],
+          },
+        ],
+      },
+      {
+        model: db.Comment,
+        attributes: ["id", "content", "createdAt"],
+        include: [
+          {
+            model: db.User,
+            attributes: ["id", "username"],
+          },
+        ],
+      },
+    ],
+  })
+    .then((message) => {
+      return res.status(200).json(message);
+    })
+    .catch(() => {
+      res.status(500).json({ error: "unknow message" });
+    });
+};
+
+exports.modifyMessage = (req, res, next) => {
+  console.log(req.body);
+
+  db.User.findOne({
+    where: { id: req.body.userId },
+  })
+    .then((user) => {
+      db.Message.findOne({
+        where: { id: req.params.messageId },
+      })
+        .then((message) => {
+          if (message.UserId == user.id || user.isAdmin === true) {
+            if (req.body.image == "undefined") {
+              return db.Message.update(
+                {
+                  ...req.body,
+                  attachment: null,
+                },
+                { where: { id: req.params.messageId } },
+                db.Like.destroy({ where: { messageId: message.id } })
+              )
+                .then(() => res.status(200).json("message updated"))
+                .catch(() => res.status(400).json({ error: "invalid" }));
+            } else {
+              return db.Message.update(
+                {
+                  ...req.body,
+                  attachment: `${req.protocol}://${req.get("host")}/images/${
+                    req.file.filename
+                  }`,
+                },
+                { where: { id: req.params.messageId } },
+                db.Like.destroy({ where: { messageId: message.id } })
+              )
+                .then(() => res.status(200).json("message updated"))
+                .catch(() => res.status(400).json({ error: "invalid" }));
+            }
+          } else {
+            return res.status(403).json("no access");
+          }
+        })
+        .catch(() => {
+          res.status(500).json({ error: "unknow message" });
+        });
+    })
+    .catch(() => {
+      res.status(500).json({ error: "unknow user" });
+    });
+};
+
+exports.deleteMessage = (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, "TOKEN");
+  const userId = decodedToken.userId;
+
+  db.User.findOne({
+    where: { id: userId },
+  })
+    .then((user) => {
+      db.Message.findOne({ where: { id: req.params.messageId } })
+        .then((message) => {
+          if (message.UserId == user.id || user.isAdmin === true) {
+            if (message.attachment === null) {
+              db.Message.destroy({
+                where: { id: req.params.messageId },
+              })
+                .then(() =>
+                  res.status(200).json({ message: "message deleted" })
+                )
+                .catch((error) => res.status(400).json({ error }));
+            } else {
+              const filename = message.attachment.split("/images/")[1];
+              fs.unlink(`images/${filename}`, () => {
+                db.Message.destroy({
+                  where: { id: req.params.messageId },
+                })
+                  .then(() =>
+                    res.status(200).json({ message: "message deleted" })
+                  )
+                  .catch((error) => res.status(400).json({ error }));
+              });
+            }
+          } else {
+            return res.status(403).json("no access");
+          }
+        })
+        .catch((error) => res.status(500).json({ error: "unknow message" }));
+    })
+    .catch(() => {
+      res.status(500).json({ error: "unknow user" });
+    });
 };
