@@ -15,7 +15,7 @@ export default {
   computed: {
     copyright() {
       const currentYear = new Date().getFullYear();
-      return `Copyright - ${this.name} -  ${currentYear}`;
+      return `${this.name} depuis 1976 jusqu'à ${currentYear}`;
     },
   },
 };
@@ -29,7 +29,7 @@ export default {
   bottom: 0;
   height: 5.5rem;
   padding-top: 1rem;
-  background: #212121;
+  background: hsl(240, 100%, 50%);
   color: white;
   font-size: 1.5rem;
 }

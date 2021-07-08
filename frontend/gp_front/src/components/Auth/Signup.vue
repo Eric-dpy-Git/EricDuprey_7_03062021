@@ -1,12 +1,12 @@
 <template>
   <div class="container-fluid">
     <div>
-      <b-navbar toggleable type="dark" variant="dark" fixed="top">
+      <b-navbar toggleable type="dark" variant="primary" fixed="top">
         <b-navbar-brand>
           <img
             alt="Groupomania logo"
             width="50"
-            src="../../assets/icon.png"
+            src="../../assets/logo_w_gp.png"
           />Groupomania</b-navbar-brand
         >
         <b-navbar-toggle target="navbar-toggle-collapse"> </b-navbar-toggle>
@@ -28,7 +28,7 @@
     </div>
 
     <section>
-      <h2>Bienvenue</h2>
+      <h2>Le réseau Groupomanie</h2>
     </section>
 
     <b-form @submit="onSubmit" class="col-md-8 mx-auto left">
@@ -38,7 +38,7 @@
           id="email"
           type="email"
           required
-          placeholder="your-mail@example.com"
+          placeholder="votre-mail@example.com"
         ></b-form-input>
       </b-form-group>
 
@@ -48,7 +48,7 @@
           id="username"
           type="text"
           required
-          placeholder=""
+          placeholder="Choisissez votre pseudo"
         ></b-form-input>
       </b-form-group>
 
@@ -62,7 +62,7 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="Lastname" label="Prénom:" label-for="lastname">
+      <b-form-group id="Lastname" label="Prénom :" label-for="lastname">
         <b-form-input
           v-model="form.lastname"
           id="lastname"
@@ -72,12 +72,12 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="Password" label="Password" label-for="password">
+      <b-form-group id="Password" label="Mot de passe" label-for="password">
         <b-form-input
           type="password"
           id="password"
           aria-describedby="password-help-block"
-          placeholder=""
+          placeholder="1 Maj - 1 chiffre - 8 caract min. "
           v-model="form.password"
           required
         ></b-form-input>
@@ -93,7 +93,10 @@
 
 <script>
 import axios from "axios";
-
+/* from --> https://emailregex.com */
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+/* Minimum eight characters, at least one letter and one number */
+const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.{2,}\d)([-+!*$@%_\w]{8,100})$/;
 export default {
   name: "Signup",
   data() {
@@ -112,9 +115,17 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-
       const self = this;
-
+      if (
+        !PASSWORD_REGEX.test(this.form.password) ||
+        !EMAIL_REGEX.test(this.form.email)
+      ) {
+        return this.$swal.fire(
+          "Mauvaise entrée, verifiez : ",
+          "votre email ou le mot de passe",
+          "error"
+        );
+      }
       axios
         .post("http://localhost:3000/api/users/signup/", {
           email: this.form.email,
@@ -125,10 +136,8 @@ export default {
           isAdmin: this.form.isAdmin,
         })
         .then(function(response) {
-          console.log(response);
           localStorage.setItem("session", JSON.stringify(response.data.token));
           localStorage.setItem("userId", JSON.stringify(response.data.userId));
-
           localStorage.setItem(
             "isAdmin",
             JSON.stringify(response.data.isAdmin)
