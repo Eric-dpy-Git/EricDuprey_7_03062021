@@ -106,7 +106,7 @@ export default {
           password: this.form.password,
         })
         .then(function(response) {
-          /* console.log(response); */
+          console.log(response);
 
           localStorage.setItem("session", JSON.stringify(response.data.token));
           localStorage.setItem("userId", JSON.stringify(response.data.userId));

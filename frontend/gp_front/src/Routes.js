@@ -8,6 +8,8 @@ import ModifyProfile from "./components/Profile/ModifyProfile.vue";
 
 import NewMessage from "./components/Message/NewMessage.vue";
 
+import OneMessage from "./components/Message/OneMessage.vue";
+
 export default [
   { path: "/", component: Login },
   { path: "/Signup", component: Signup },
@@ -18,4 +20,5 @@ export default [
   { path: "/Home/ModifyProfile", component: ModifyProfile },
 
   { path: "/Home/NewMessage", component: NewMessage },
+  { path: "/Home/OneMessage/:messageId", component: OneMessage },
 ];

@@ -64,8 +64,10 @@ exports.getAllMessages = (req, res, next) => {
 };
 
 exports.getOneMessage = (req, res, next) => {
+  console.log(req.params.messageId);
   db.Message.findOne({
     where: { id: req.params.messageId },
+
     include: [
       {
         model: db.User,
@@ -77,6 +79,7 @@ exports.getOneMessage = (req, res, next) => {
           },
         ],
       },
+
       {
         model: db.Comment,
         attributes: ["id", "content", "createdAt"],
@@ -89,9 +92,11 @@ exports.getOneMessage = (req, res, next) => {
       },
     ],
   })
+
     .then((message) => {
       return res.status(200).json(message);
     })
+
     .catch(() => {
       res.status(500).json({ error: "unknow message" });
     });

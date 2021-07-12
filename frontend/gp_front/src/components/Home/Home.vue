@@ -46,7 +46,7 @@
       v-for="(message, index) in messages"
       class="col-10 col-md-6 col-xl-5 mx-auto cardMarginBottom"
     >
-      <router-link :to="`/Home/age/${message.id}`">
+      <router-link :to="`/Home/OneMessage/${message.id}`">
         <b-card
           :img-src="message.attachment"
           :img-alt="message.title"
