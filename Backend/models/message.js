@@ -9,11 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // models.Message.belongsTo(models.User, {//belongsTo le type de relation
-      //   foreignKey: {//la relation de la clé étrangère ne doit pas être égal à null
-      //     allowNull: false,
-      //   },
-      // })
     }
   }
   Message.init(

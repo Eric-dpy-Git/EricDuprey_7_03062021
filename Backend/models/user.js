@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,41 +9,45 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // models.User.hasMany(models.Message, {foreignKey: 'userId'}, {onDelete: 'cascade'});//on a aujouté ici pour associer notre user à message
     }
-  };
-  User.init({
-    email: DataTypes.STRING,
-    username: DataTypes.STRING,
-    firstname: DataTypes.STRING,
-    lastname: DataTypes.STRING,
-    password: DataTypes.STRING,
-    isAdmin: DataTypes.BOOLEAN
-  }, 
-  {
-    sequelize,
-    modelName: 'User',
-  });
-  
-  return User;
-};
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  var User = sequelize.define('User', {
-    email: DataTypes.STRING,
-    username: DataTypes.STRING,
-    firstname: DataTypes.STRING,
-    lastname: DataTypes.STRING,
-    password: DataTypes.STRING,
-    isAdmin: DataTypes.BOOLEAN
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-        models.User.hasMany(models.Message);
-      }
+  }
+  User.init(
+    {
+      email: DataTypes.STRING,
+      username: DataTypes.STRING,
+      firstname: DataTypes.STRING,
+      lastname: DataTypes.STRING,
+      password: DataTypes.STRING,
+      isAdmin: DataTypes.BOOLEAN,
+    },
+    {
+      sequelize,
+      modelName: "User",
     }
-  });
-  return User;
-};
+  );
 
+  return User;
+};
+("use strict");
+module.exports = (sequelize, DataTypes) => {
+  var User = sequelize.define(
+    "User",
+    {
+      email: DataTypes.STRING,
+      username: DataTypes.STRING,
+      firstname: DataTypes.STRING,
+      lastname: DataTypes.STRING,
+      password: DataTypes.STRING,
+      isAdmin: DataTypes.BOOLEAN,
+    },
+    {
+      classMethods: {
+        associate: function (models) {
+          // associations can be defined here
+          models.User.hasMany(models.Message);
+        },
+      },
+    }
+  );
+  return User;
+};
