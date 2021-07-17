@@ -18,6 +18,6 @@ schema
   .spaces()
   .is()
   .not()
-  .oneOf(["Passw0rd", "Password123"]);
+  .oneOf(["Password000", "Password123", "etc..."]);
 
 module.exports = schema;

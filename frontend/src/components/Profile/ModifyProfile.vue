@@ -1,3 +1,4 @@
+<!-- here : html injected in App.vue page -->
 <template>
   <div class="container-fluid">
     <div>
@@ -34,11 +35,6 @@
                 >Supprimer mon compte</router-link
               ></b-nav-item
             >
-            <!-- <b-nav-item
-              ><b-navbar-brand to="/Home/DeleteProfile"
-                >Supprimer mon profil</router-link
-              ></b-nav-item
-            > -->
             <b-nav-item v-on:click="deconnexion" class="deconnexion"
               >Se déconecter</b-nav-item
             >
@@ -50,10 +46,8 @@
         <h1>Modifier mes renseignements</h1>
       </b-jumbotron>
     </div>
-
     <section id="modify" class="col-md-8 mx-auto my-5">
       <h2>Mon compte</h2>
-
       <b-form @submit="onSubmit" class=" mx-auto left">
         <b-form-group id="Email" label="Mon nouveau email :" label-for="email">
           <b-form-input
@@ -64,7 +58,6 @@
             placeholder="Email professionnel"
           ></b-form-input>
         </b-form-group>
-
         <b-form-group id="Username" label="Pseudo :" label-for="username">
           <b-form-input
             v-model="form.username"
@@ -74,7 +67,6 @@
             placeholder="Nouveau pseudo"
           ></b-form-input>
         </b-form-group>
-
         <b-form-group id="Firstname" label="Nom :" label-for="firstname">
           <b-form-input
             v-model="form.firstname"
@@ -83,7 +75,6 @@
             required
           ></b-form-input>
         </b-form-group>
-
         <b-form-group id="Lastname" label="Prénom :" label-for="lastname">
           <b-form-input
             v-model="form.lastname"
@@ -92,7 +83,6 @@
             required
           ></b-form-input>
         </b-form-group>
-
         <b-form-group id="Password" label="Mot de passe" label-for="password">
           <b-form-input
             type="password"
@@ -103,12 +93,10 @@
             required
           ></b-form-input>
         </b-form-group>
-
         <b-button id="button" type="submit" variant="primary" class="col"
           >Modifier</b-button
         >
       </b-form>
-
       <hr class="col-8" />
     </section>
     <section id="image">
@@ -116,8 +104,8 @@
     </section>
   </div>
 </template>
-
 <script>
+//here monted in first vue
 import axios from "axios";
 const REGEX_NAME = /^[a-zÀ-ÿ\d\-.'\s]{2,30}$/i;
 const REGEX_EMAIL = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -146,6 +134,7 @@ export default {
       this.$router.push("/");
     }
   },
+  //here on event actions
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
@@ -206,7 +195,7 @@ export default {
   },
 };
 </script>
-
+<!--here scss style -->
 <style scoped lang="scss">
 div {
   padding: 0;

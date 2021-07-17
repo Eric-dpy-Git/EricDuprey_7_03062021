@@ -1,3 +1,4 @@
+<!-- here : html injected in App.vue page -->
 <template>
   <div class="container-fluid">
     <div>
@@ -15,7 +16,7 @@
         <b-collapse id="navbar-toggle-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item
-              ><router-link to="/Home/AdminHome" v-if="userId === 1"
+              ><router-link to="/Home/AdminHome" v-if="isAdmin === true"
                 >Accès régulateur</router-link
               ></b-nav-item
             >
@@ -45,7 +46,6 @@
         <h1>Bonjour {{ data.username }}</h1>
       </b-jumbotron>
     </div>
-
     <div
       :key="index"
       v-for="(message, index) in messages"
@@ -70,12 +70,14 @@
         </b-card>
       </router-link>
     </div>
+    <div id="image">
+      <img src="../../assets/gpm.png" width="300" alt="logo Groupomania" />
+    </div>
   </div>
 </template>
-
 <script>
+//here monted in first vue
 import axios from "axios";
-
 export default {
   name: "Home",
   data() {
@@ -87,7 +89,6 @@ export default {
       sessionToken: null,
     };
   },
-
   mounted() {
     let self = this;
     this.userId = JSON.parse(localStorage.getItem("userId"));
@@ -110,7 +111,6 @@ export default {
         .catch(function(erreur) {
           console.log(erreur);
         });
-
       axios
         .get(`http://localhost:3000/api/messages/`, {
           headers: {
@@ -127,7 +127,7 @@ export default {
         });
     }, 500);
   },
-
+  //here on event action
   methods: {
     deconnexion: function() {
       localStorage.clear();
@@ -136,7 +136,7 @@ export default {
   },
 };
 </script>
-
+<!--here scss style -->
 <style scoped lang="scss">
 img {
   max-height: 50vh;

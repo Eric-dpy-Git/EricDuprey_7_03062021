@@ -1,3 +1,4 @@
+<!-- here : html injected in App.vue page -->
 <template>
   <div class="container-fluid">
     <div>
@@ -21,16 +22,13 @@
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
-
       <b-jumbotron>
         <h1>Se connecter</h1>
       </b-jumbotron>
     </div>
-
     <section>
       <h2>Inserez votre mail et votre mot de passe</h2>
     </section>
-
     <b-form @submit="onSubmit" class="col-md-8 mx-auto left">
       <b-form-group id="email" label="Votre email:" label-for="email">
         <b-form-input
@@ -41,7 +39,6 @@
           placeholder="Mail utilisé pour l'inscription"
         ></b-form-input>
       </b-form-group>
-
       <b-form-group
         id="input-group-2"
         label="Votre mot de passe :"
@@ -56,23 +53,22 @@
           required
         ></b-form-input>
       </b-form-group>
-
       <hr class="col-8" />
-
       <b-button type="submit" variant="primary" class="col button"
         >Valider</b-button
       >
     </b-form>
-
     <section>
       <img src="../../assets/gpm.png" width="300" alt="logo Groupomania" />
     </section>
+    <div>
+      <img src="../../assets/pict.png" width="310" alt="Photo de Groupomania" />
+    </div>
   </div>
 </template>
-
 <script>
+//here monted in first vue
 import axios from "axios";
-
 const REGEX_EMAIL = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const REGEX_PASSWORD = /^(?=.*[A-Z])(?=.*[a-z])(?=.{2,}\d)([-+!*$@%_\w]{8,100})$/;
 export default {
@@ -85,6 +81,7 @@ export default {
       },
     };
   },
+  //here on event actions
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
@@ -95,7 +92,6 @@ export default {
       ) {
         return this.$swal("Email ou mot de passe invalide", "error");
       }
-
       axios
         .post("http://localhost:3000/api/users/login/", {
           email: this.form.email,
@@ -109,7 +105,6 @@ export default {
             JSON.stringify(response.data.isAdmin)
           );
           let userId = JSON.parse(localStorage.getItem("userId"));
-
           if (userId != null) {
             setTimeout(() => {
               self.$router.push("/Home");
@@ -124,7 +119,7 @@ export default {
   },
 };
 </script>
-
+<!--here scss style -->
 <style scoped lang="scss">
 div {
   padding: 0;

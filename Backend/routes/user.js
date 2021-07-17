@@ -1,13 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const bouncer = require("express-bouncer")(1000, 900000, 3);
-const userCtrl = require("../controllers/user");
-const auth = require("../middleware/auth");
+const EXPRESS = require("express");
+const ROUTER = EXPRESS.Router();
+const BOUNCER = require("express-bouncer")(1000, 900000, 3);
+const USER_CTRL = require("../controllers/user");
+const AUTH = require("../middleware/auth");
 
-router.post("/signup/", userCtrl.signup);
-router.post("/login/", bouncer.block, userCtrl.login);
-router.get("/me/:id", auth, userCtrl.getUserProfile);
-router.put("/me/", auth, userCtrl.updateUserProfile);
-router.delete("/me/:id", auth, userCtrl.deleteUserProfile);
+ROUTER.post("/signup/", USER_CTRL.signup);
+ROUTER.post("/login/", BOUNCER.block, USER_CTRL.login);
+ROUTER.get("/me/:id", AUTH, USER_CTRL.getUserProfile);
+ROUTER.put("/me/", AUTH, USER_CTRL.updateUserProfile);
+ROUTER.delete("/me/:id", AUTH, USER_CTRL.deleteUserProfile);
 
-module.exports = router;
+module.exports = ROUTER;

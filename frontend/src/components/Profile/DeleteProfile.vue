@@ -1,3 +1,4 @@
+<!-- here : html injected in App.vue page -->
 <template>
   <div class="container-fluid">
     <div>
@@ -29,29 +30,16 @@
                 >Modifier mes renseignements</router-link
               ></b-nav-item
             >
-
-            <!-- <b-nav-item
-              ><router-link to="/Home/DeleteProfile"
-                >Supprimer mes renseignements</router-link
-              ></b-nav-item
-            > -->
-            <!-- <b-nav-item
-              ><b-navbar-brand to="/Home/DeleteProfile"
-                >Supprimer mon profil</router-link
-              ></b-nav-item
-            > -->
             <b-nav-item v-on:click="deconnexion" class="deconnexion"
               >Se déconecter</b-nav-item
             >
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
-
       <b-jumbotron>
         <h1>Supprimer mon compte</h1>
       </b-jumbotron>
     </div>
-
     <section id="delete" class="col-md-6 mx-auto my-5 ">
       <h2>Supprimer mon compte</h2>
       <hr class="col-8" />
@@ -73,12 +61,10 @@
     </section>
   </div>
 </template>
-
 <script>
+//here monted in first vue
 import axios from "axios";
-
 const REGEX_NUMBER = /^\d+$/;
-
 export default {
   name: "DeleteProfile",
   data() {
@@ -94,6 +80,7 @@ export default {
       this.$router.push("/");
     }
   },
+  //here on event actions
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
@@ -117,7 +104,6 @@ export default {
           console.log(erreur);
         });
     },
-
     deconnexion: function() {
       localStorage.clear();
       this.$router.push("/");
@@ -125,7 +111,7 @@ export default {
   },
 };
 </script>
-
+<!--here scss style -->
 <style scoped lang="scss">
 div {
   padding: 0;

@@ -1,3 +1,4 @@
+<!-- here : html injected in App.vue page -->
 <template>
   <div class="container-fluid">
     <div>
@@ -25,40 +26,10 @@
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
-
       <b-jumbotron>
         <h1>Compte régulateur</h1>
       </b-jumbotron>
     </div>
-
-    <!-- <section id="modify" class="col-md-10 mx-auto my-5 ">
-      <h2>Modifier le compte</h2>
-
-      <b-form @submit="onSubmit" class=" mx-auto left">
-        <b-form-group
-          id="IsAdmin"
-          label="Changer le rôle :"
-          label-for="isAdmin"
-        >
-          <b-form-input
-            v-model="form.isAdmin"
-            id="isAdmin"
-            type="text"
-            required
-            placeholder="0 ou 1"
-          ></b-form-input>
-          <p class="text-align-left">
-            Entrez 1 pour changer le rôle en Admin et 0 pour perdre ce rôle.
-          </p>
-        </b-form-group>
-
-        <b-button type="submit" variant="warning" class="col button"
-          >Modifier</b-button
-        >
-      </b-form>
-    </section>
-    <hr class="col-8" /> -->
-
     <section id="delete">
       <h2>Supprimer le compte</h2>
 
@@ -70,12 +41,14 @@
         >Supprimer</b-button
       >
     </section>
+    <div id="image">
+      <img src="../../assets/gpm.png" width="300" alt="logo Groupomania" />
+    </div>
   </div>
 </template>
-
 <script>
+//here monted in first vue
 import axios from "axios";
-
 const REGEX_NUMBER = /^\d+$/;
 export default {
   name: "ModifyProfile",
@@ -96,6 +69,7 @@ export default {
       this.$router.push("/");
     }
   },
+  //here on event actions
   methods: {
     onDelete(evt) {
       evt.preventDefault();
@@ -158,7 +132,7 @@ export default {
   },
 };
 </script>
-
+<!--here scss style -->
 <style scoped lang="scss">
 div {
   padding: 0;

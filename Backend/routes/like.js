@@ -1,9 +1,10 @@
-const express = require("express");
-const router = express.Router();
-const likesCtrl = require("../controllers/like");
-const auth = require("../middleware/auth");
+const { Router } = require("express");
+const EXPRESS = require("express");
+const ROUTER = EXPRESS.Router();
+const LIKES_CTRL = require("../controllers/like");
+const AUTH = require("../middleware/auth");
 
-router.post("/:messageId/like", auth, likesCtrl.likeMessage);
-router.post("/:messageId/dislike", auth, likesCtrl.dislikeMessage);
+ROUTER.post("/:messageId/like", AUTH, LIKES_CTRL.likeMessage);
+ROUTER.post("/:messageId/dislike", AUTH, LIKES_CTRL.dislikeMessage);
 
-module.exports = router;
+module.exports = ROUTER;

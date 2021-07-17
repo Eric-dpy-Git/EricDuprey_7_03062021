@@ -1,3 +1,4 @@
+<!-- here : html injected in App.vue page -->
 <template>
   <div class="container-fluid">
     <div>
@@ -21,12 +22,10 @@
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
-
       <b-jumbotron>
         <h1>Formulaire d'inscription</h1>
       </b-jumbotron>
     </div>
-
     <section>
       <h2>Bienvenue chez Groupomania</h2>
     </section>
@@ -40,7 +39,6 @@
           placeholder="Inserez votre email professionnel"
         ></b-form-input>
       </b-form-group>
-
       <b-form-group
         id="Username"
         label="Definissez un pseudo :"
@@ -53,7 +51,6 @@
           required
         ></b-form-input>
       </b-form-group>
-
       <b-form-group id="Firstname" label="Votre prénom :" label-for="firstname">
         <b-form-input
           v-model="form.firstname"
@@ -62,7 +59,6 @@
           required
         ></b-form-input>
       </b-form-group>
-
       <b-form-group id="Lastname" label="Votre nom : " label-for="lastname">
         <b-form-input
           v-model="form.lastname"
@@ -71,7 +67,6 @@
           required
         ></b-form-input>
       </b-form-group>
-
       <b-form-group
         id="Password"
         label="Definissez un mot de passe :"
@@ -86,21 +81,18 @@
           required
         ></b-form-input>
       </b-form-group>
-
       <b-button type="submit" variant="primary" class="col button"
         >Valider</b-button
       >
     </b-form>
-
     <section>
       <img src="../../assets/gpm.png" width="300" alt="logo Groupomania" />
     </section>
   </div>
 </template>
-
 <script>
+//here monted in first vue
 import axios from "axios";
-
 const REGEX_NAME = /^[a-zÀ-ÿ\d\-.'\s]{2,30}$/i;
 const REGEX_EMAIL = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const REGEX_PASSWORD = /^(?=.*[A-Z])(?=.*[a-z])(?=.{2,}\d)([-+!*$@%_\w]{8,100})$/;
@@ -118,7 +110,7 @@ export default {
       },
     };
   },
-
+  //here on event actions
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
@@ -175,7 +167,7 @@ export default {
   },
 };
 </script>
-
+<!--here scss style -->
 <style scoped lang="scss">
 div {
   padding: 0;

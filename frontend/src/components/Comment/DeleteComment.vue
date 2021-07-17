@@ -1,3 +1,4 @@
+<!-- here : html injected in App.vue page -->
 <template>
   <div class="container-fluid">
     <div>
@@ -35,12 +36,10 @@
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
-
       <b-jumbotron>
         <h1>Supprimer mon commentaire</h1>
       </b-jumbotron>
     </div>
-
     <div class="col-10 col-md-7 mx-auto comment">
       <b-card
         :header="User.username"
@@ -55,22 +54,23 @@
           @click="deleteComment"
           variant="danger"
           class="float-right"
-          v-if="userId == User.id || userId === 1"
+          v-if="userId == User.id || isAdmin === true"
           >X</b-button
         >
       </b-card>
     </div>
+    <div id="image">
+      <img src="../../assets/gpm.png" width="300" alt="logo Groupomania" />
+    </div>
   </div>
 </template>
-
 <script>
+//here monted in first vue
 import axios from "axios";
-
 const regexNumber = /^\d+$/;
 export default {
   name: "DeleteComment",
   data() {
-    // données
     return {
       commentId: this.$route.params.commentId,
       isAdmin: false,
@@ -113,6 +113,7 @@ export default {
         window.location.reload();
       });
   },
+  //here on event actions
   methods: {
     deleteComment() {
       const self = this;
@@ -147,7 +148,7 @@ export default {
   },
 };
 </script>
-
+<!--here scss style -->
 <style scoped lang="scss">
 img {
   max-height: 50vh;

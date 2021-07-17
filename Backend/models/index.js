@@ -1,65 +1,65 @@
 "use strict";
 
-const fs = require("fs");
-const path = require("path");
-const Sequelize = require("sequelize");
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/../config/config.json")[env];
-const db = {};
+const FS = require("fs");
+const PATH = require("path");
+const SEQUELIZE = require("sequelize");
+const BASENAME = PATH.basename(__filename);
+const ENV = process.env.NODE_ENV || "development";
+const CONFIG = require(__dirname + "/../config/config.json")[ENV];
+const DB = {};
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+if (CONFIG.use_env_variable) {
+  sequelize = new SEQUELIZE(process.env[CONFIG.use_env_variable], CONFIG);
 } else {
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
+  sequelize = new SEQUELIZE(
+    CONFIG.database,
+    CONFIG.username,
+    CONFIG.password,
+    CONFIG
   );
 }
 
-fs.readdirSync(__dirname)
+FS.readdirSync(__dirname)
   .filter((file) => {
     return (
-      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
+      file.indexOf(".") !== 0 && file !== BASENAME && file.slice(-3) === ".js"
     );
   })
   .forEach((file) => {
-    const model = require(path.join(__dirname, file))(
+    const model = require(PATH.join(__dirname, file))(
       sequelize,
-      Sequelize.DataTypes
+      SEQUELIZE.DataTypes
     );
-    db[model.name] = model;
+    DB[model.name] = model;
   });
 
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
+Object.keys(DB).forEach((modelName) => {
+  if (DB[modelName].associate) {
+    DB[modelName].associate(DB);
   }
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+DB.sequelize = sequelize;
+DB.SEQUELIZE = SEQUELIZE;
 
-db.User = require("../models/user")(sequelize, Sequelize);
-db.Comment = require("../models/comment")(sequelize, Sequelize);
-db.Message = require("../models/message")(sequelize, Sequelize);
-db.Like = require("../models/like")(sequelize, Sequelize);
+DB.User = require("../models/user")(sequelize, SEQUELIZE);
+DB.Comment = require("../models/comment")(sequelize, SEQUELIZE);
+DB.Message = require("../models/message")(sequelize, SEQUELIZE);
+DB.Like = require("../models/like")(sequelize, SEQUELIZE);
 
-db.User.hasMany(db.Message);
+DB.User.hasMany(DB.Message);
 
-db.Message.belongsTo(db.User);
+DB.Message.belongsTo(DB.User);
 
-db.User.hasMany(db.Like);
-db.Like.belongsTo(db.User);
-db.Message.hasMany(db.Like);
-db.Like.belongsTo(db.Message);
+DB.User.hasMany(DB.Like);
+DB.Like.belongsTo(DB.User);
+DB.Message.hasMany(DB.Like);
+DB.Like.belongsTo(DB.Message);
 
-db.User.hasMany(db.Comment);
-db.Comment.belongsTo(db.User);
-db.Message.hasMany(db.Comment);
-db.Comment.belongsTo(db.Message);
+DB.User.hasMany(DB.Comment);
+DB.Comment.belongsTo(DB.User);
+DB.Message.hasMany(DB.Comment);
+DB.Comment.belongsTo(DB.Message);
 
-module.exports = db;
+module.exports = DB;

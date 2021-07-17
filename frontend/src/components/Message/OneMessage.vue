@@ -89,7 +89,7 @@
         type="submit"
         variant="danger"
         class="col-md-4 mx-2 my-2 button"
-        v-if="userId == User.id || userId === 1"
+        v-if="userId == User.id || isAdmin === true"
         >Supprimer</b-button
       >
 
@@ -153,13 +153,16 @@
           }}</span>
           <router-link
             :to="`/Home/OneMessage/${messageId}/DeleteComment/${comment.id}`"
-            v-if="userId == comment.User.id || userId === 1"
+            v-if="userId == comment.User.id || isAdmin === true"
           >
             <b-button variant="danger" class="float-right ">X</b-button>
           </router-link>
         </b-card>
       </div>
     </section>
+    <div id="image">
+      <img src="../../assets/gpm.png" width="300" alt="logo Groupomania" />
+    </div>
   </div>
 </template>
 

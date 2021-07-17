@@ -1,3 +1,4 @@
+<!-- here : html injected in App.vue page -->
 <template>
   <div class="container-fluid">
     <div>
@@ -15,7 +16,9 @@
         <b-collapse id="navbar-toggle-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item
-              ><router-link to="/Home" exact>Accueil</router-link></b-nav-item
+              ><router-link to="/Home" exact
+                >Tous les messages</router-link
+              ></b-nav-item
             >
             <b-nav-item v-on:click="deconnexion" class="deconnexion"
               >Se déconnecter</b-nav-item
@@ -26,9 +29,8 @@
       <b-jumbotron>
         <h1>Accès régulateur</h1>
       </b-jumbotron>
-      <h2>Utilisateurs :</h2>
+      <h2>Utilisateurs enregistrés :</h2>
     </div>
-
     <div
       :key="index"
       v-for="(user, index) in users"
@@ -57,12 +59,15 @@
         >
       </router-link>
     </div>
+    <div id="image">
+      <img src="../../assets/gpm.png" width="300" alt="logo Groupomania" />
+    </div>
   </div>
 </template>
 
 <script>
+//here monted in first vue
 import axios from "axios";
-
 export default {
   name: "Home",
   data() {
@@ -93,6 +98,7 @@ export default {
         console.log(erreur);
       });
   },
+  //here on event actions
   methods: {
     deconnexion: function() {
       localStorage.clear();
@@ -101,7 +107,7 @@ export default {
   },
 };
 </script>
-
+<!--here scss style -->
 <style scoped lang="scss">
 img {
   max-height: 50vh;

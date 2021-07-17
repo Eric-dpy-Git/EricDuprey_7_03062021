@@ -1,3 +1,4 @@
+<!-- here : html injected in App.vue page -->
 <template>
   <div class="container-fluid">
     <div>
@@ -45,7 +46,6 @@
         <h1>Mes renseignements</h1>
       </b-jumbotron>
     </div>
-
     <section id="coordonnées" class="col-md-6 mx-auto ">
       <h2>Mes coordonnées</h2>
       <p>Email : {{ data.email }}</p>
@@ -54,18 +54,15 @@
       <p>Nom : {{ data.lastname }}</p>
       <hr class="col-8" />
     </section>
-
     <div id="image">
       <img src="../../assets/gpm.png" width="300" alt="logo Groupomania" />
     </div>
   </div>
 </template>
-
 <script>
+//here monted in first vue
 import axios from "axios";
-
 const REGEX_NUMBER = /^\d+$/;
-
 export default {
   name: "MyProfile",
   data() {
@@ -84,7 +81,6 @@ export default {
     if (!REGEX_NUMBER.test(userId)) {
       return this.$swal("invalid", "", "error");
     }
-
     axios
       .get(`http://localhost:3000/api/users/me/${userId}`, {
         headers: {
@@ -98,6 +94,7 @@ export default {
         console.log(erreur);
       });
   },
+  //here on event actions
   methods: {
     deconnexion: function() {
       localStorage.clear();
@@ -106,7 +103,7 @@ export default {
   },
 };
 </script>
-
+<!--here scss style -->
 <style scoped lang="scss">
 div {
   padding: 0;

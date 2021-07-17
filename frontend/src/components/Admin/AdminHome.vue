@@ -1,3 +1,4 @@
+<!-- here : html injected in App.vue page -->
 <template>
   <div class="container-fluid">
     <div>
@@ -31,32 +32,27 @@
     </div>
 
     <section>
-      <h2>Liste des utilisateurs</h2>
+      <h2>Valider pour afficher la liste des utilisateurs</h2>
       <b-card
         bg-variant="secondary"
         text-variant="white"
-        src="../../assets/icon-above-font.png"
         img-alt="Image groupomania"
         class="my-5 mx-auto py-5"
-        style="max-width: 80vw;"
-        img-top
+        style="max-width: 60vw;"
       >
-        <!--   <b-card-text>
-          Veulliez à manipuler les données avec prudences selon les consignes du
-          RGPD.
-        </b-card-text> -->
-        <!-- <a id="white" href="https://www.cnil.fr/fr/comprendre-le-rgpd"
-          >Comprendre le RGPD</a
-        ><br /> -->
-        <router-link to="/Home/AdminHome/AllUsers" v-if="isAdmin === false">
+        <router-link to="/Home/AdminHome/AllUsers" v-if="isAdmin === true">
           <b-button variant="success" class="button my-3">Valider</b-button>
         </router-link>
       </b-card>
     </section>
+    <div id="image">
+      <img src="../../assets/gpm.png" width="300" alt="logo Groupomania" />
+    </div>
   </div>
 </template>
 
 <script>
+//here monted in first vue
 export default {
   name: "AdminHome",
   data() {
@@ -65,16 +61,14 @@ export default {
       userId: null,
     };
   },
-
   mounted() {
-    // on récupère nos données via le localStorage
     this.userId = JSON.parse(localStorage.getItem("userId"));
     this.isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
     if (this.userId === undefined || this.userId === null) {
       this.$router.push("/");
     }
   },
-
+  //here on event actions
   methods: {
     deconnexion: function() {
       localStorage.clear();
@@ -83,8 +77,7 @@ export default {
   },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!--here scss style -->
 <style scoped lang="scss">
 img {
   max-height: 50vh;

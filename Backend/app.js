@@ -1,21 +1,21 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const helmet = require("helmet");
-const path = require("path");
-const toobusy = require("toobusy-js");
-toobusy.maxLag(40);
-const dotenv = require("dotenv");
-dotenv.config();
+const EXPRESS = require("express");
+/* const BODY_PARSER = require("body-parser"); */
+const HELMET = require("helmet");
+const PATH = require("path");
+const TOOBUSY = require("toobusy-js");
+TOOBUSY.maxLag(40);
+const DOTENV = require("dotenv");
+DOTENV.config();
 
-const commentRoutes = require("./routes/comment");
-const likeRoutes = require("./routes/like");
-const adminRoutes = require("./routes/admin");
-const messageRoutes = require("./routes/message");
-const userRoutes = require("./routes/user");
+const COMMENT_ROUTES = require("./routes/comment");
+const LIKE_ROUTES = require("./routes/like");
+const ADMIN_ROUTES = require("./routes/admin");
+const MESSAGES_ROUTES = require("./routes/message");
+const USER_ROUTES = require("./routes/user");
 
-const app = express();
+const APP = EXPRESS();
 
-app.use((req, res, next) => {
+APP.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -28,25 +28,25 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+APP.use(EXPRESS.urlencoded({ extended: true }));
+APP.use(EXPRESS.json());
 
-app.use("/images", express.static(path.join(__dirname, "images")));
+APP.use("/images", EXPRESS.static(PATH.join(__dirname, "images")));
 
-app.use(helmet());
+APP.use(HELMET());
 
-app.use(function (req, res, next) {
-  if (toobusy()) {
-    res.send(503, "I'm busy right now, sorry.");
+APP.use(function (req, res, next) {
+  if (TOOBUSY()) {
+    res.send(503, "Too busy...");
   } else {
     next();
   }
 });
 
-app.use("/api/messages", commentRoutes);
-app.use("/api/messages", likeRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/messages", messageRoutes);
-app.use("/api/users", userRoutes);
+APP.use("/api/messages", COMMENT_ROUTES);
+APP.use("/api/messages", LIKE_ROUTES);
+APP.use("/api/admin", ADMIN_ROUTES);
+APP.use("/api/messages", MESSAGES_ROUTES);
+APP.use("/api/users", USER_ROUTES);
 
-module.exports = app;
+module.exports = APP;

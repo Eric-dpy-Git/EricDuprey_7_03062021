@@ -85,6 +85,9 @@
         >
       </b-form>
     </section>
+    <div id="image">
+      <img src="../../assets/gpm.png" width="300" alt="logo Groupomania" />
+    </div>
   </div>
 </template>
 

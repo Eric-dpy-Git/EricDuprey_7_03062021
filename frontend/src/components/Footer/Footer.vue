@@ -1,15 +1,15 @@
+<!-- here : html injected in App.vue page -->
 <template>
   <section class="container-fluid footer">
     <h3>{{ copyright }}</h3>
   </section>
 </template>
-
 <script>
 export default {
   name: "Footer",
   data() {
     return {
-      name: "Groupomania",
+      name: "by CONNECT-E",
     };
   },
   computed: {
@@ -20,7 +20,7 @@ export default {
   },
 };
 </script>
-
+<!--here scss style -->
 <style scoped lang="scss">
 .footer {
   position: fixed;
