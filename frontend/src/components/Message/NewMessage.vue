@@ -8,7 +8,7 @@
               alt="logo Groupomania"
               width="60"
               src="../../assets/gp.png"
-            />Groupomania</router-link
+            />GROUPOMANIA</router-link
           ></b-navbar-brand
         >
         <b-navbar-toggle target="navbar-toggle-collapse"></b-navbar-toggle>

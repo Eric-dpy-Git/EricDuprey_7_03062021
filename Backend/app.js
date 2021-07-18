@@ -1,5 +1,4 @@
 const EXPRESS = require("express");
-/* const BODY_PARSER = require("body-parser"); */
 const HELMET = require("helmet");
 const PATH = require("path");
 const TOOBUSY = require("toobusy-js");
