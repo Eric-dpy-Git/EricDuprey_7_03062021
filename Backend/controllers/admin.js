@@ -6,6 +6,7 @@ module.exports = {
     let token = req.headers.authorization.split(" ")[1];
     let decodedToken = JWT.verify(token, process.env.TKN);
     let userId = decodedToken.userId;
+
     DB.User.findOne({
       where: { id: userId },
     })
@@ -20,6 +21,7 @@ module.exports = {
                 .status(500)
                 .json({ message: "server error with get all user" })
             );
+          console.log("!!!!!!!!!je viens de vérifier le modérateur!!!!!!!!!!");
         } else {
           return res.status(403).json({ message: "unauthorized" });
         }
@@ -41,6 +43,7 @@ module.exports = {
           })
             .then(() => res.status(200).json({ message: "user deleted" }))
             .catch((error) => res.status(400).json({ error }));
+          console.log("!!!!!!!!!je viens de vérifier le modérateur!!!!!!!!!!");
         } else {
           return res.status(403).json("unauthorized");
         }

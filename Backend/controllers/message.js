@@ -23,6 +23,7 @@ module.exports = {
     ) {
       return res.status(400).json({ error: "invalid entry" });
     }
+    console.log("je suis là");
     DB.User.findOne({
       where: { id: req.body.userId },
     })
