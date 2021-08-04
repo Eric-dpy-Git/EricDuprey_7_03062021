@@ -1,7 +1,8 @@
 //import
-import { createStore } from "vuex";
+/* import { createStore } from "vuex"; */
 
 // create a new store instance
-const STORE = createStore({});
+/* const STORE = createStore({});
 
 export default STORE;
+ */

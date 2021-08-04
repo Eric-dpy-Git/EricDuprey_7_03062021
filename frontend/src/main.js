@@ -1,6 +1,10 @@
 import Vue from "vue";
 import App from "./App.vue";
 
+//state management
+/* import STORE from "./store";
+Vue.use(STORE); */
+
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
