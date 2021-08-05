@@ -1,21 +1,18 @@
-import Login from "./views/Auth/Login.vue";
-import Signup from "./views/Auth/Signup.vue";
-import Home from "./views/Home/Home.vue";
-import AdminHome from "./views/Admin/AdminHome.vue";
-import AdminAllUsers from "./views/Admin/AdminAllUsers.vue";
-import AdminOneUser from "./views/Admin/AdminOneUser.vue";
-import MyProfile from "./views//Profile/MyProfile.vue";
-import ModifyProfile from "./views//Profile/ModifyProfile.vue";
-import DeleteProfile from "./views//Profile/DeleteProfile.vue";
-import NewMessage from "./views//Message/NewMessage.vue";
-import ModifyMessage from "./views//Message/ModifyMessage.vue";
-import OneMessage from "./views/Message/OneMessage.vue";
-import DeleteComment from "./views//Comment/DeleteComment.vue";
-
-
+import Login from "../views/Auth/Login.vue";
+import Signup from "../views/Auth/Signup.vue";
+import Home from "../views/Home/Home.vue";
+import AdminHome from "../views/Admin/AdminHome.vue";
+import AdminAllUsers from "../views/Admin/AdminAllUsers.vue";
+import AdminOneUser from "../views/Admin/AdminOneUser.vue";
+import MyProfile from "../views//Profile/MyProfile.vue";
+import ModifyProfile from "../views//Profile/ModifyProfile.vue";
+import DeleteProfile from "../views//Profile/DeleteProfile.vue";
+import NewMessage from "../views//Message/NewMessage.vue";
+import ModifyMessage from "../views//Message/ModifyMessage.vue";
+import OneMessage from "../views/Message/OneMessage.vue";
+import DeleteComment from "../views//Comment/DeleteComment.vue";
 
 export default [
-
   { path: "/", component: Login },
   { path: "/Signup", component: Signup },
 

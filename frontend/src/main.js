@@ -25,7 +25,7 @@ Vue.use(require("vue-moment"), {
 });
 
 import VueRouter from "vue-router";
-import Routes from "./Routes";
+import Routes from "./router/index";
 
 Vue.config.productionTip = false;
 
