@@ -1,10 +1,14 @@
 import Vue from "vue";
 import App from "./App.vue";
-
+/* import router from "./router"; */
+//state ----------------------------------------------
+//reapeted from store/index.js
+import Vuex from "vuex";
+Vue.use(Vuex);
 //state management
-/* import STORE from "./store";
-Vue.use(STORE); */
+import store from "./store";
 
+//-------------------------------------------------------
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
@@ -36,7 +40,14 @@ const router = new VueRouter({
   mode: "history",
 });
 
-new Vue({
+/* new Vue({
   render: (h) => h(App),
   router: router,
+  store,
+}).$mount("#app"); */
+
+new Vue({
+  router,
+  store,
+  render: (h) => h(App),
 }).$mount("#app");

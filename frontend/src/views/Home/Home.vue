@@ -45,6 +45,21 @@
       <b-jumbotron>
         <h1>Bonjour {{ data.username }}</h1>
       </b-jumbotron>
+      <div>
+        <p>Mon test Vuex {{ testVuex }}</p>
+        <p>{{ currentValue }}</p>
+        <b-button variant="success" v-on:click="increment" class="mx-1 my-1">
+          <b-icon icon="hand-thumbs-up"></b-icon>
+          <span id="green"> <!-- {{ messageUnique.likes }}  --></span>
+        </b-button>
+        <b-button variant="warning" v-on:click="decrement" class="mx-1 my-1">
+          <b-icon icon="hand-thumbs-down"></b-icon>
+          <span id="red"> <!-- {{ messageUnique.dislikes }} --> </span>
+        </b-button>
+
+        <!-- <button v-on:click="increment">+</button>
+        <button v-on:click="decrement">-</button> -->
+      </div>
     </div>
     <div
       :key="index"
@@ -78,10 +93,15 @@
 <script>
 //here monted in first vue
 import axios from "axios";
+//---------------------------------store
+/* import store from "../../store/index";
+console.log(store); */
 export default {
   name: "Home",
   data() {
     return {
+      //add currentValue
+      currentValue: 0,
       data: [],
       messages: [],
       isAdmin: false,
@@ -127,13 +147,28 @@ export default {
         });
     }, 500);
   },
+
+  //work on store ------------------------------------
+  /* computed: {
+    displayTest() {
+      return this.store.state.testVuex;
+    },
+  }, */
+  //-------------------------------------------------
   //here on event action
   methods: {
     deconnexion: function() {
       localStorage.clear();
       this.$router.push("/");
     },
+    increment() {
+      this.currentValue = this.currentValue = +1;
+    },
+    decrement() {
+      this.currentValue = this.currentValue = -1;
+    },
   },
+  //work on store ------------------------------------
 };
 </script>
 <!--here scss style -->
