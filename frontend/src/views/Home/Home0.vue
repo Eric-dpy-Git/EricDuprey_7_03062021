@@ -1,12 +1,5 @@
+<!-- here : html injected in App.vue page -->
 <template>
-  <!-- <div>
-    <h2>{{ currentValue }}</h2>
-    <div>
-      <button @click="increment">+</button>
-      <button @click="decrement">-</button>
-      <input type="number" v-model.number="step" />
-    </div>
-  </div> -->
   <div class="container-fluid">
     <div>
       <b-navbar toggleable type="dark" variant="primary" fixed="top">
@@ -57,8 +50,19 @@
         <div>
           <button @click="increment">+</button>
           <button @click="decrement">-</button>
+          <input type="number" v-model.number="step" />
         </div>
       </div>
+      <!-- <div>
+        <p>Mon test Vuex {{ testVuex }}</p>
+        <p>{{ currentValue }}</p>
+        <b-button variant="success" v-on:click="increment" class="mx-1 my-1">
+          <b-icon icon="hand-thumbs-up"></b-icon>
+        </b-button>
+        <b-button variant="warning" v-on:click="decrement" class="mx-1 my-1">
+          <b-icon icon="hand-thumbs-down"></b-icon>
+        </b-button>
+      </div> -->
     </div>
     <div
       :key="index"
@@ -89,15 +93,21 @@
     </div>
   </div>
 </template>
-
 <script>
-import { mapState } from "vuex";
+//here monted in first vue
 import axios from "axios";
-
+//---------------------------------store
+import { mapState } from "vuex";
+/* import store from "../../store/index";
+console.log(store); */
 export default {
   name: "Home",
   data() {
     return {
+      //add currentValue
+      /* currentValue: 0, */
+      step: 1,
+      //-------------------
       data: [],
       messages: [],
       isAdmin: false,
@@ -143,6 +153,15 @@ export default {
         });
     }, 500);
   },
+
+  //work on store ------------------------------------
+  /* computed: {
+    displayTest() {
+      return this.store.state.testVuex;
+    },
+  }, */
+  //-------------------------------------------------
+  //here on event action
   methods: {
     deconnexion: function() {
       localStorage.clear();
@@ -154,13 +173,14 @@ export default {
     decrement() {
       this.$store.dispatch("decrement", this.step);
     },
+    computed: {
+      ...mapState(["currentValue"]),
+    },
   },
-  computed: {
-    ...mapState(["currentValue"]),
-  },
+  //work on store ------------------------------------
 };
 </script>
-
+<!--here scss style -->
 <style scoped lang="scss">
 img {
   max-height: 50vh;
