@@ -62,9 +62,20 @@
         </b-card-text>
 
         <div id="likesAndDislikes">
+          <!-- test state management -->
+          <div>
+            <!-- work in progress -->
+            <h3>{{ formatedDate }}</h3>
+            <b-button @click="incrementDay">Incrémenter</b-button>
+            <h3>{{ messagesGet }}</h3>
+            <!-- work in progress -->
+          </div>
+          <!-- test state management -->
           <b-button variant="success" @click="onLike" class="mx-1 my-1">
+            <!-- <b-button variant="success" @click="increment" class="mx-1 my-1"> -->
             <b-icon icon="hand-thumbs-up"></b-icon>
             <span id="green"> {{ messageUnique.likes }} </span>
+            <!-- <span id="green"> {{ currentValue }} </span> -->
           </b-button>
 
           <b-button variant="warning" @click="onDislike" class="mx-1 my-1">
@@ -167,6 +178,11 @@
 </template>
 
 <script>
+//work in progress
+import { mapGetters } from "vuex";
+import { mapState } from "vuex";
+//work in progress
+
 import axios from "axios";
 
 const REGEX_CONTENT = /^[a-zÀ-ÿ\d\-.':)(+;,!?\s]{0,250}$/i;
@@ -193,6 +209,9 @@ export default {
     };
   },
   mounted() {
+    //------------------------display
+    /* this.$store.dispatch("formatedDate"); */
+    //---------------------------------
     let self = this;
     this.userId = JSON.parse(localStorage.getItem("userId"));
     this.isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
@@ -361,6 +380,16 @@ export default {
           console.log(response);
         });
     },
+    //work in progress
+    incrementDay() {
+      /* this.$store.commit("INCREMENT_DAY"); */
+      this.$store.dispatch("getTest", 1000);
+    },
+  },
+  computed: {
+    ...mapState(["currentValue"]),
+    ...mapGetters(["formatedDate"]),
+    ...mapGetters(["messagesGet"]),
   },
 };
 </script>

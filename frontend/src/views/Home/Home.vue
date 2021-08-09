@@ -1,12 +1,4 @@
 <template>
-  <!-- <div>
-    <h2>{{ currentValue }}</h2>
-    <div>
-      <button @click="increment">+</button>
-      <button @click="decrement">-</button>
-      <input type="number" v-model.number="step" />
-    </div>
-  </div> -->
   <div class="container-fluid">
     <div>
       <b-navbar toggleable type="dark" variant="primary" fixed="top">
@@ -52,13 +44,6 @@
       <b-jumbotron>
         <h1>Bonjour {{ data.username }}</h1>
       </b-jumbotron>
-      <div>
-        <h2>{{ currentValue }}</h2>
-        <div>
-          <button @click="increment">+</button>
-          <button @click="decrement">-</button>
-        </div>
-      </div>
     </div>
     <div
       :key="index"
@@ -91,11 +76,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import axios from "axios";
 
 export default {
   name: "Home",
+
   data() {
     return {
       data: [],
@@ -148,15 +133,6 @@ export default {
       localStorage.clear();
       this.$router.push("/");
     },
-    increment() {
-      this.$store.dispatch("increment", this.step);
-    },
-    decrement() {
-      this.$store.dispatch("decrement", this.step);
-    },
-  },
-  computed: {
-    ...mapState(["currentValue"]),
   },
 };
 </script>

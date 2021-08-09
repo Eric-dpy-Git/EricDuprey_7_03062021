@@ -3,8 +3,7 @@ import App from "./App.vue";
 /* import router from "./router"; */
 //state ----------------------------------------------
 //reapeted from store/index.js
-import Vuex from "vuex";
-Vue.use(Vuex);
+
 //state management
 import store from "./store";
 

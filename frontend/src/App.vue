@@ -1,11 +1,18 @@
 <template>
   <div id="app">
+    <!-- work in progress -->
+
+    <!-- work in progress -->
     <router-view></router-view>
 
     <footer-bottom></footer-bottom>
   </div>
 </template>
 <script>
+//work in progress
+
+//work in progress
+
 import Footer from "./componements/Footer/Footer.vue";
 export default {
   name: "App",
