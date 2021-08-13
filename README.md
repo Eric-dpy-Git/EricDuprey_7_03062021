@@ -4,7 +4,7 @@ Ce projet est le MVP d'un réseau social d'entreprise
 
 Cette application se base sur Node pour le backend, Mysql pour la base de données et Vue pour le frontend
 
-<!-- ******\*\*\*\******* vuex project ********\*\*\********* -->
+**\*\***\*\*\*\***\*\*** vuex project **\*\*\*\***\*\*\***\*\*\*\***
 
 !!!!! Now i'm working to implement Vuex to get a real dynamic app.
 
@@ -16,7 +16,7 @@ That ok but at the moment, i can't do it with the message id selectionné...
 
 Need to work on it more...
 
-<!-- -------------------------------------------------------------- -->
+/_ -------------------------------------------------------------- _/
 
 Ci-dessous, je vous présente les étapes nécessaires pour faire fonctionner l'app sur votre ordinateur
 
