@@ -32,11 +32,12 @@ export default new Vuex.Store({
     /* getTest({ commit }) {
       commit("SET_MESSAGES");
     }, */
-    getTest({ commit }) {
+    getTest({ commit } /* messageId */) {
       axios
         .get(
-          `http://localhost:3000/api/messages/`
-          /* `http://localhost:3000/api/messages/${this.submit.messageId}/dislike` */
+          /* `http://localhost:3000/api/messages/` */
+          `http://localhost:3000/api/messages/${this.submit.messageId}/dislike`
+          /* `http://localhost:3000/api/messages/${this.messageId}` */
         )
         .then((response) => {
           commit("SET_MESSAGES", response.data);

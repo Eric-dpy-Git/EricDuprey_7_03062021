@@ -4,6 +4,20 @@ Ce projet est le MVP d'un réseau social d'entreprise
 
 Cette application se base sur Node pour le backend, Mysql pour la base de données et Vue pour le frontend
 
+<!-- ******\*\*\*\******* vuex project ********\*\*\********* -->
+
+!!!!! Now i'm working to implement Vuex to get a real dynamic app.
+
+Into the OneMessage.vue, i want click on like or dislike ang get display with no page refresh.
+
+So i need to fetch my API with axios as an action, then commit in mutation before to be in state.
+
+That ok but at the moment, i can't do it with the message id selectionné...
+
+Need to work on it more...
+
+<!-- -------------------------------------------------------------- -->
+
 Ci-dessous, je vous présente les étapes nécessaires pour faire fonctionner l'app sur votre ordinateur
 
 1- Téléchargez le projet en cliquant sur le lien à droite de la page GitHub ou ici :

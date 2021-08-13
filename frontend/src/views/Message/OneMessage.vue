@@ -383,7 +383,7 @@ export default {
     //work in progress
     incrementDay() {
       /* this.$store.commit("INCREMENT_DAY"); */
-      this.$store.dispatch("getTest", 1000);
+      this.$store.dispatch("getTest", { messageId: this.messageId });
     },
   },
   computed: {
